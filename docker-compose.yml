@@ -1,0 +1,36 @@
+# docker-compose.yml
+version: '3.8'
+
+# This file defines the services (containers) that make up our application's backend.
+services:
+  # The PostgreSQL Database service
+  postgres:
+    image: postgres:14
+    container_name: local-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: yoursecurepassword # Change this in a real project
+      POSTGRES_DB: insidertradingdb
+    ports:
+      - "5432:5432" # Maps port 5432 on your machine to port 5432 in the container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persists database data even if container is removed
+
+  # The Redis Cache service
+  redis:
+    image: redis:7
+    container_name: local-redis
+    ports:
+      - "6379:6379" # Maps port 6379 for your application to connect
+
+  # The RabbitMQ Message Broker service
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: local-rabbitmq
+    ports:
+      - "5672:5672"   # Port for agent applications to connect
+      - "15672:15672" # Port for the web-based management UI
+
+# Defines a named volume to persist PostgreSQL data
+volumes:
+  postgres_data:
