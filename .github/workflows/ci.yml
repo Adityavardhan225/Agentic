@@ -38,4 +38,5 @@ jobs:
       # Step 5: Run the tests with pytest
       - name: Test with pytest
         run: |
+          export PYTHONPATH=./
           pytest
